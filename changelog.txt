@@ -1,0 +1,59 @@
+Changes in version 1.0.2e:
+
+* fixed incompatibility with Firefox 4.0+
+
+Changes in version 1.0.2d:
+
+* adds functionality: highlights table rows on-click
+
+Changes in version 1.0.2c:
+
+* fixes an installation bug and a few typos
+* better support and explanation of the built-in data upload function
+* faster search of circ-history-by-call # using PHP array_intersect()
+* faster pcirc_holdings.php (local holdings add) using stats table
+* improved documentation!
+
+Changes in version 1.0.2b:
+
+* change mysql query in scripts.php line 46 to correctly cue the user to 
+  update the stats table each month. It's not as good as it could be, but 
+  it's better than the non-functionality of 1.0.2a.
+
+Changes in version 1.0.2a:
+
+* supports limiting to circs by a particular patron type (PTYPE)
+  * ceases to use innreach_stats table, replaced by innreach_stats_by_ptype
+
+* better implementation of return-to-previous-screen functionality after adding titles 
+  * uses new $_SESSION[last_query] cookie
+
+* added subject descriptions of LC classes
+
+* better handling and display of limiting by month / date-range
+  * show currently-selected month if current page is limited by month
+  * else, show "unselected" if this option is not in effect
+
+* user can remove date & ptype limits w/ "x" links at top of page
+
+* upload-data page -- easy for non-MySQL-savvy users
+  * uses new page: upload_data.php
+  * ugly but functional
+  * default config setting enables this function
+  * to disable, set: $allow_uploads = false; in config.php
+
+* corrected date display to reflect truth, and total # of months
+
+* make circ history available for all books (title known or not) w/o AJAX
+  * opens in new window, could be classier, but it works
+  * links from the # of circs column in ShowBooksByQuery()
+_________________________
+
+Enhancements for future versions:
+
+* run reports on specific date ranges
+
+* the "up-to-date" check (scripts.php, ca. line 38) assumes that the most 
+  recent month is the only place there could be a discrepancy between raw 
+  data and the stats table. is there a better metric?
+

@@ -1,0 +1,28 @@
+ul#tabnav {
+	list-style-type: none;
+	margin: 0;
+	margin-bottom: 3em;
+	padding-left: 40px;
+	padding-bottom: 24px;
+	border-bottom: 1px solid #711515;
+	font: bold 11px verdana, arial, sans-serif;
+}
+ul#tabnav li {
+	float: left;
+	height: 21px;
+	background-color: #B51032;
+	color: #FFFFFF;
+	margin: 2px 2px 0 2px;
+	border: 1px solid #711515;
+}
+ul#tabnav a:link, ul#tabnav a:visited {
+	display: block;
+	color: #FFFFFF;
+	background-color: transparent;
+	text-decoration: none;
+	padding: 4px;
+}
+ul#tabnav a:hover {
+	background-color: #F4869C;
+	color: #FFFFFF;
+}
