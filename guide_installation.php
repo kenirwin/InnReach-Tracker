@@ -1,5 +1,6 @@
 <?
 function GuideInstallation ($verbose = false) {
+  global $debug;
   if (! $debug) { ERROR_REPORTING(0); }
   include ("config.php");
   $print = "<h1>InnReach Tracker - Installation Progress</h1>\n";

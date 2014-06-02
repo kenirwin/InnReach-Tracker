@@ -21,7 +21,7 @@ else { // run script
   print "<body>\n";
   
   PrintPageTop();
-  
+
   if ($debug) { print_rr($_SESSION); }
   
 

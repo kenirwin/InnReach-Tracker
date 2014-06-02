@@ -58,14 +58,7 @@ while ($myrow = mysql_fetch_row($r)) {
 
 function HandleCookies () {
   global $_REQUEST, $_SESSION;
-  session_register("min");
-  session_register("post_class");
-  session_register("ptype_limit");
-  session_register("most_recent_pcirc_date");
-  session_register("limit_to_month");
-  session_register("sort");
-  session_register("mytab");
-  session_register("view");
+  $session_vars = array ("min", "post_class", "ptype_limit", "most_recent_pcirc_date", "limit_to_month", "sort", "mytab", "view");
 
   /*
     NOTE: there's also a $_SESSION['last_query'] defined in ShowBooksByQuery()
@@ -74,7 +67,7 @@ function HandleCookies () {
   if ($_REQUEST['delete_limit']) {
     // remove limits at user's request
     $cookie = $_REQUEST['delete_limit'];
-    session_unregister($cookie);
+    //FIX:    session_unregister($cookie);
   }
 
   if ($_REQUEST['min']) { $_SESSION['min'] = $_REQUEST['min']; }
@@ -336,15 +329,18 @@ function AddTitle() {
 
 function ShowBooksByClass() {
   global $_SESSION;
+  global $debug;
   $limit_to_month = $_REQUEST['limit_to_month'];
   $most_recent_pcirc_date = $_REQUEST['most_recent_pcirc_date'];
   if ($limit_to_month) { $added_query = " and `last_pcirc` like '$limit_to_month%'"; }
   elseif ($most_recent_pcirc_date) 
     $added_query = " and `last_pcirc` >= '$most_recent_pcirc_date'";
   $q = "SELECT * FROM `innreach_stats_by_ptype` WHERE `call` like '$_SESSION[post_class]%' and `pcircs` >= $_SESSION[min] $added_query and `ptype` = '$_SESSION[ptype_limit]'";
-  //  print $q;
-  $count = ShowBooksByQuery($q);
-  return ($count);
+  if ($debug) { 
+    print "<li>ShowBooksByClass: $q</li>\n"; 
+  }
+    $count = ShowBooksByQuery($q);
+    return ($count);
 } // end function ShowBooksByClass
 
 
@@ -405,8 +401,9 @@ function ShowAllKnownTitles($sort="circs") {
     global $InnReach_Catalog_URL;
     $mytab = $_SESSION['mytab'];
     $r = mysql_query ($q);
-    //     print $q;
-    session_register("last_query");
+    if ($debug) {
+      print "<li>ShowBooksByQuery: $q</li>\n";
+    }
     $_SESSION[last_query] = $q;
     $count = mysql_num_rows($r);
     $totals = array();
