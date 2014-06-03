@@ -17,13 +17,11 @@ else { // run script
 
   if ($_REQUEST['delete_session_vars']) { session_unset(); }
   HandleCookies(); // sets $min and $post_class as defined or as default
-
+  ThinkAbout($_SESSION);
   print "<body>\n";
   
   PrintPageTop();
 
-  if ($debug) { print_rr($_SESSION); }
-  
 
   /* Add titles to DB if submitted */
   if ($_REQUEST[bulk_submit]) { BulkSubmit(); }

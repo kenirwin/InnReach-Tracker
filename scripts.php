@@ -523,6 +523,12 @@ function ThisFolder () {
   }
 } //end function ThisFolder
 
+function ThinkAbout ($arr) {
+  /* 
+     this function does nothing, but for whatever reason it seems to help anyway. Specifically, it reminds the script it knows about the Session variables and so they actually take effect. this is a big crazy hack, but it works!
+   */
+}
+
 function print_rr ($var) {
   //print_rr: print "really readable" -- preformatted version of print_r
   print "<pre>\n";
