@@ -143,13 +143,15 @@ function HandleUpload () {
       
       $q = "LOAD DATA INFILE '$path/tmp/$fileName' INTO TABLE innreach_by_" . $_REQUEST[filetype];
       $q .=" FIELDS TERMINATED BY '\\t' LINES TERMINATED BY '\\n';";
+      
+      if ($debug) {print "<li>$q</li>"; }
 
       if (mysql_query($q)) {
 	print ("<p><strong>".mysql_affected_rows() . " records imported into ". $_REQUEST[filetype] ." table from ". $fileName.".</strong></p><p>* Be sure to run the <strong><a href=\"pcirc_sum_stats.php\">Stats Update</a></strong> function once you've finished uploading data. (Note: it may take a few minutes to run!)</p><hr>");
 	unlink ("tmp/".$fileName);
       }
       else 
-	die('Invalid query: ' . mysql_error());
+	die('Query Failed: ' . mysql_error());
 
     } //end if isset
 

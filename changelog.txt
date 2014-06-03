@@ -1,3 +1,9 @@
+Changes in version 1.1.0:
+
+* discontinued use of deprecated PHP functions session_register(), etc.
+* suitable for use with PHP 4.1.0+
+* necessary for use with PHP 5.4.0+
+
 Changes in version 1.0.2e:
 
 * fixed incompatibility with Firefox 4.0+

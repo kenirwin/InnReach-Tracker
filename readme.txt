@@ -1,6 +1,6 @@
-InnreachTracker 1.0.2
+InnreachTracker 1.1.0
 by Ken Irwin, Wittenberg University
-Release date: 8 June, 2009
+Release date: 3 June, 2014
 
 This suite of scripts takes data exported from Innovative Interfaces (III)
 catalog systems to show what books have been requested from other libraries
@@ -9,7 +9,7 @@ Creative Commons Attribution-Share Alike 3.0 United States license. For more
 details, see the license.php file.
 
 The software was designed in a LAMP (Linux/Apache/MySQL/PHP) environment
-and has also been tested on Sun OS 5.8. 
+and has also been tested on Sun OS 5.8. Version 1.1.x requires PHP version 4.1.0 or later.
 
 A few things are required before using the software.
 
