@@ -5,6 +5,7 @@
 <script type="text/javascript" src="ajax.js"></script>
 <script type="text/javascript" src="narrow.js"></script>
 <script type="text/javascript" src="css_browser_selector.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
