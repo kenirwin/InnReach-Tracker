@@ -4,6 +4,10 @@
 <h2>Add Local Holdings Information</h2>
 <p><a href="index.php">Return to View Top InnReach Requests</a></p>
 <?
+   /*
+  error_reporting(E_ALL);
+  ini_set("display_errors", true);
+   */
 include ("config.php");
 include ("mysql_connect.php");
 
@@ -22,7 +26,7 @@ if ($_REQUEST['submit_button']) {
   } //end foreach submission
 } // end if submission
 
-$q = "SELECT call,title FROM `innreach_stats_by_ptype` WHERE ((`have` is null) or (`have` = '')) and ((`title` is not null) and (`title` != '')) and `ptype` = 'all'"; 
+$q = "SELECT `call`,title FROM `innreach_stats_by_ptype` WHERE ((`have` is null) or (`have` = '')) and ((`title` is not null) and (`title` != '')) and `ptype` = 'all'"; 
 
 $r = mysql_query ($q);
 
