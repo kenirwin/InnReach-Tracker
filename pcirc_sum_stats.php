@@ -62,7 +62,8 @@ foreach ($totals as $call => $total) {
   } //end foreach ptype-per-book
 } // end foreach total
 
-print "<li class=good>added $success entries to innreach_stats_by_ptype</li>\n";
+
+print "<li class=good>added ". number_format($success) ." entries to innreach_stats_by_ptype</li>\n";
 if ($failure > 0) { print "<li class=bad>failed to add $failure entries</a>\n"; }
 
 
