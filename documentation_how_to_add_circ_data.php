@@ -45,11 +45,11 @@ include ("config.php");
  <li>Go back to step 4 and repeat the process for "Report: Call #" instead of "Report: Title". You might save the resulting file as "ibc_sept08.txt".</li>
  <li>Having saved the monthly data exported from III, you now need to load it into the MySQL tables <code>innreach_by_call</code> and <code>innreach_by_title</code>. There are a few ways to do this.
     <ol>
-																								   <li>The simplest way is to use the <strong><a href="upload_data.php">Upload Data</a></strong> function. To use this function, you will have to make sure that the <code>$allow_uploads</code> variable is set to <code>true</code> in the <strong>config.php</strong> file AND your web server will have to have write permissions for the tmp/ subdirectory of this directory. You may need to ask your system administrator for help in granting those permissions.</li>
+<li>The simplest way is to use the <strong><a href="upload_data.php">Upload Data</a></strong> function. To use this function, you will have to make sure that the <code>$allow_uploads</code> variable is set to <code>true</code> and that you have an <code>$Upload_Folder</code> defined in the <strong>config.php</strong> file AND your web server will have to have write permissions for the $Upload_Folder directory. You may need to ask your system administrator for help in granting those permissions.</li>
 
  <li>If you have access to a web interface to MySQL (like phpMyAdmin), you might upload these files in a fashion something like this:
 <ul>
- <li>Select <strong><?=$MySQL_Database;?></strong> from the list of databases.</li>
+ <li>Select <strong>my_database</strong> from the list of databases.</li>
   <li>Select the <strong>innreach_by_call</strong> database from the left-hand pane.</li>
  <li>At the bottom of the "Structure" tab (or in some versions of phpMyAdmin, at the bottom of the "Insert" tab) click on the link that says "Insert data from a textfile into table".</li>
  <li>Using the form displayed:
@@ -68,13 +68,13 @@ include ("config.php");
     </li>
     <li>If you have command-line access to MySQL through a login-shell on your server, you may use a series of commands something like this once you've logged in to mysql:
 				 <ul>
-				 <li><code>use <?=$MySQL_Database;?>;</code></li>
+				 <li><code>use my_database</code></li>
 				 <li><code>load data infile '/path/to/file/ibt_sept08.txt'<br>
 				 into table innreach_by_title<br>
-				 fields terminated by '\t' lines terminated by '\n';</li>
+				 fields terminated by '\t' lines terminated by '\n';</code></li>
 				 <li><code>load data infile '/path/to/file/ibc_sept08.txt'<br>
 				 into table innreach_by_call<br>
-				 fields terminated by '\t' lines terminated by '\n';</li>
+				 fields terminated by '\t' lines terminated by '\n';</code></li>
 				 </ul>
     </li>
     </ol>

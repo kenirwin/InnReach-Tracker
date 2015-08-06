@@ -7,6 +7,7 @@ $Local_Catalog_Name= ""; // ex: EZRA
 $Local_Catalog_URL = ""; // ex: ezra.wittenberg.edu
 $InnReach_Catalog_URL = "olc1.ohiolink.edu";
 $InnReach_Catalog_Name = "OhioLINK";
+$Upload_Folder = ""; //path with no trailing slash; outside the webserver space, e.g. /var/upload/innreach
 
 $MySQL_Host = "localhost";   /* if "localhost" doesn't work, try "127.0.0.1" */
 $MySQL_Database = ""; //ex: "innreach_data"

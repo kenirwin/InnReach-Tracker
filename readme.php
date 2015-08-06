@@ -26,12 +26,14 @@ $doc_nav = '<ul class="doc_nav">
 
 <a name="install"></a>
 <?=$doc_nav;?>
+<h2>Installation</h2>
 <pre>
 <? include ("readme.txt"); ?>
 </pre>
 <hr>
 <a name="change_log"></a>
 <?=$doc_nav;?>
+<h2>Change Log</h2>
 <pre>
 <? include ("changelog.txt"); ?>
 </pre>

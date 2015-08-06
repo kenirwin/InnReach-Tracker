@@ -35,25 +35,25 @@ if ($allow_uploads == true) {
     HandleUpload();
   }
   
-  if (fopen("tmp/temp","x")) { // try to make a file to test write permissions
-    fclose ("tmp/temp");
-    unlink ("tmp/temp");
+  if (fopen("$Upload_Folder/temp","x")) { // try to make a file to test write permissions
+    fclose ("$Upload_Folder/temp");
+    unlink ("$Upload_Folder/temp");
     ShowUploadForm();
   } // end if web server has write permissions
 
   else { // if web server doesn't have write permissions
-    print "<div class=warning><h3>This Function is Unavailable</h3><p>The web server does not have write permissions to the tmp/ directory, so this function is unavailable. To allow direct file uploads, talk with your system administrator about granting write permission to the tmp/ directory. In the mean time you can still upload files through your MySQL interface (<a href=\"documentation_how_to_add_data.php\">see documentation</a>).</p>";
+    print "<div class=warning><h3>This Function is Unavailable</h3><p>The web server does not have write permissions to the <code>$Upload_Folder</code> directory, so this function is unavailable. To allow direct file uploads, talk with your system administrator about granting write permission to the <code>$Upload_Folder</code> directory. In the mean time you can still upload files through your MySQL interface (<a href=\"documentation_how_to_add_data.php\">see documentation</a>).</p>";
  
     /*
       Don't know the username for your webserver's process? 
       You can un-comment the next line and it will display in the error msg.
       This is left commented-out because it may be regarded as sensitive info.
-      You may wish to re-comment-out the line once you get the answer. 
+      You should re-comment-out the line once you get the answer. 
     */
     // print "Web server username and group info: " . exec("id") ."</p>\n";
 
     print "</div>\n";
-  } //end else if not able to write to tmp directory
+  } //end else if not able to write to $Upload_Folderdirectory
 } //end if the allow-uploads setting is allowed in config.php
 
 else { 
@@ -128,6 +128,7 @@ print "<div id=\"$filetype\" style=\"display: none\">$content[$filetype]</div>";
 
 
 function HandleUpload () {
+    global $Upload_Folder;
   if(isset($_POST['upload_button']) && $_FILES['userfile']['size'] >  0)
     {
       $fileName = $_FILES['userfile']['name'];
@@ -135,20 +136,20 @@ function HandleUpload () {
       $fileSize = $_FILES['userfile']['size'];
       $fileType = $_FILES['userfile']['type'];
 
-      if (! move_uploaded_file($tmpName, "tmp/".$fileName)) { //if fail to mv
+      if (! move_uploaded_file($tmpName, "$Upload_Folder/".$fileName)) { //if fail to mv
 	print "<p class=warning>failed to move file: check to be sure web server has write permissions to the tmp/ directory</p>";
       }
 
       $path = preg_replace ("/[^\/]+$/", "", $_SERVER[SCRIPT_FILENAME]);
       
-      $q = "LOAD DATA INFILE '$path/tmp/$fileName' INTO TABLE innreach_by_" . $_REQUEST[filetype];
+      $q = "LOAD DATA INFILE '$Upload_Folder/$fileName' INTO TABLE innreach_by_" . $_REQUEST[filetype];
       $q .=" FIELDS TERMINATED BY '\\t' LINES TERMINATED BY '\\n';";
       
       if ($debug) {print "<li>$q</li>"; }
 
       if (mysql_query($q)) {
 	print ("<p><strong>".mysql_affected_rows() . " records imported into ". $_REQUEST[filetype] ." table from ". $fileName.".</strong></p><p>* Be sure to run the <strong><a href=\"pcirc_sum_stats.php\">Stats Update</a></strong> function once you've finished uploading data. (Note: it may take a few minutes to run!)</p><hr>");
-	unlink ("tmp/".$fileName);
+	unlink ("$Upload_Folder/".$fileName);
       }
       else 
 	die('Query Failed: ' . mysql_error());

@@ -1,3 +1,9 @@
+Changes in version 1.1.2 - 6 August 2015:
+
+* changed upload folder to one outside InnReachTracker folder
+* NOTE: if upgrading to this version you will need to define an $Upload_Folder in your config.php file
+* updated documentation
+
 Changes in version 1.1.1:
 
 * re-added link to jQuery library
