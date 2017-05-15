@@ -1,5 +1,7 @@
 <head><title>Add Local Holdings Information</title>
 <link href="pcirc_style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+<script type="text/javascript" src="highlight.js"></script>
 </head>
 <h2>Add Local Holdings Information</h2>
 <p><a href="index.php">Return to View Top InnReach Requests</a></p>

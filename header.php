@@ -7,13 +7,6 @@
 <script type="text/javascript" src="css_browser_selector.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
 
-<script type="text/javascript">
-$(document).ready(function() {
-    $('table tr').click(function() {
-	$(this).parent().children().removeClass('highlight');
-	$(this).addClass('highlight');
-      })
-})
-</script>
+<script type="text/javascript" src="highlight.js"></script>
 </head>
 
