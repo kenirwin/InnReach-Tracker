@@ -152,7 +152,7 @@ function HandleUpload () {
 	unlink ("$Upload_Folder/".$fileName);
       }
       else 
-	die('Query Failed: ' . mysql_error());
+	die('Query Failed: ' . mysql_error() . '<br />'. $q);
 
     } //end if isset
 
