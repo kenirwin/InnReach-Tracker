@@ -73,8 +73,9 @@ function ShowUploadForm() {
 ?>
 <form>
    <p>Type of file to upload:</p>
-<input type=radio onClick="showTab('call','title')" name="select"><strong>Call Number</strong> (Most recent in table = Month ending: <?=$most_recent[call];?>)<br>
-<input type=radio onClick="showTab('title','call')" name="select"><strong>Title</strong> (Most recent in table = Month ending: <?=$most_recent[title];?>)<br>
+<label><input type=radio onClick="showTab('call','title')" name="select"><strong>Call Number</strong> (Most recent in table = Month ending: <?=$most_recent[call];?>)</label><br>
+<label>
+<input type=radio onClick="showTab('title','call')" name="select"><strong>Title</strong> (Most recent in table = Month ending: <?=$most_recent[title];?>)</label><br>
 </form>
 
 <?
