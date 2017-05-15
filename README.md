@@ -1,5 +1,5 @@
-InnreachTracker
-by Ken Irwin, Wittenberg University
+# InnreachTracker
+##by Ken Irwin, Wittenberg University
 
 This suite of scripts takes data exported from Innovative Interfaces (III)
 catalog systems to show what books have been requested from other libraries
