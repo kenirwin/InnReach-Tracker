@@ -143,7 +143,7 @@ function HandleUpload () {
 
       $path = preg_replace ("/[^\/]+$/", "", $_SERVER[SCRIPT_FILENAME]);
       
-      $q = "LOAD DATA INFILE '$Upload_Folder/$fileName' INTO TABLE innreach_by_" . $_REQUEST[filetype];
+      $q = "LOAD DATA LOCAL INFILE '$Upload_Folder/$fileName' INTO TABLE innreach_by_" . $_REQUEST[filetype];
       $q .=" FIELDS TERMINATED BY '\\t' LINES TERMINATED BY '\\n';";
       
       if ($debug) {print "<li>$q</li>"; }
