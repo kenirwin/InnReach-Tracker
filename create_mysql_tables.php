@@ -141,6 +141,7 @@ if ($errors < 1) {
   `call` varchar(255) NOT NULL default '',
   `title` varchar(255) NOT NULL default '',
   `have` varchar(50) default NULL,
+  `pub_date` year(4) default NULL,
   KEY `call` (`call`)
   )";
     $results = HandleQuery($q6);
