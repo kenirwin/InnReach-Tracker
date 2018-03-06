@@ -42,10 +42,11 @@ else { // run script
   }
   else { $count = ShowBooksByClass (); } 
   
-  print "<hr><p><a href=\"pcirc_holdings.php\"><b>Add $Local_Catalog_Name holdings info for known titles</a></b></p>\n";
-  if ($allow_uploads == true) { print "<p><a href=\"upload_data.php\"><b>Upload new InnReach Data</a></b></p>\n"; }
+  print '<hr><p><a href="pcirc_holdings.php"><b>Add '.$Local_Catalog_Name.' holdings info for known titles</a></b></p>'.PHP_EOL;
+  if ($allow_uploads == true) { print '<p><a href="upload_data.php"><b>Upload new InnReach Data</a></b></p>'.PHP_EOL; }
+  print '<p><a href="matrix.php"><b>Matrix of Recent PCIRCs and Recent Publications</b></a></p>'.PHP_EOL;
   if ($count >9)
-    print "<hr><center><div id=\"bottom_menu\">$menu</div></center>";
+    print '<hr><center><div id="bottom_menu">'.$menu.'</div></center>';
 } //end else run script if config in place
 
 include ("license.php"); ?>

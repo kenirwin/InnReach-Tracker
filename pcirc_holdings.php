@@ -50,4 +50,4 @@ print "<input type=submit name=submit_button value=\"Add Holdings Info\"></form>
 ?>
 <hr>
 <p><a href="index.php">Return to View Top InnReach Requests</a></p>
-<? include("version.php");?>
+
