@@ -278,7 +278,7 @@ function BulkSubmit () {
   foreach ($add_title_array as $i => $title_string) { // $i is just an integer, not call#
     if ($title_string) {
       $title_string = addslashes($title_string);
-      $q = "INSERT INTO `innreach_titles_by_call` VALUES ('$call[$i]', '$title_string','')";
+      $q = "INSERT INTO `innreach_titles_by_call` (`call`,`title`) VALUES ('$call[$i]', '$title_string')";
       if (mysql_query($q)) { $successes .="<li>Title added: $title_string</li>\n"; }
       else { $errors .= "<li><b>Unable to add:</b> $title_string<br>$q</li>\n"; }
 
