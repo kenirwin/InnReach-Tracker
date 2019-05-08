@@ -1,4 +1,4 @@
-<?
+<?php
 
 include ("tabnav.php");
 include ("sortLC.php");

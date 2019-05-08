@@ -1,4 +1,4 @@
-<?
+<?php
 function array_search_recursive($needle, $haystack, $a=0, $nodes_temp=array()){
   /* copied from php.net: 
      http://us2.php.net/manual/en/function.array-search.php#79640

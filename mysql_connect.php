@@ -1,4 +1,4 @@
-<?
+<?php
 /* connect to MySQL database */
 
 

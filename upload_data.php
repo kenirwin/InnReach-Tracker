@@ -23,7 +23,7 @@ function showTab (id, not) {
 <h2>Upload New InnReach Data</h2>
 
 <p><a href="index.php">Return to View Top InnReach Requests</a></p>
-<?
+<?php
 ERROR_REPORTING(0);
 include ("config.php");
 include ("mysql_connect.php");
@@ -73,12 +73,12 @@ function ShowUploadForm() {
 ?>
 <form>
    <p>Type of file to upload:</p>
-<label><input type=radio onClick="showTab('call','title')" name="select"><strong>Call Number</strong> (Most recent in table = Month ending: <?=$most_recent[call];?>)</label><br>
+<label><input type=radio onClick="showTab('call','title')" name="select"><strong>Call Number</strong> (Most recent in table = Month ending: <?php echo $most_recent[call];?>)</label><br>
 <label>
-<input type=radio onClick="showTab('title','call')" name="select"><strong>Title</strong> (Most recent in table = Month ending: <?=$most_recent[title];?>)</label><br>
+<input type=radio onClick="showTab('title','call')" name="select"><strong>Title</strong> (Most recent in table = Month ending: <?php echo $most_recent[title];?>)</label><br>
 </form>
 
-<?
+<?php
 
   foreach ($ptypes as $code => $colname) { 
     $row .= "<th>$colname</th>\n";

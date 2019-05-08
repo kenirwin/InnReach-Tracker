@@ -1,13 +1,13 @@
 <div class="inline_lookup_pane">
 
-<? 
+<?php 
 extract($_REQUEST);
 
 if (preg_match("/(^[^\_]+)\_/",$location,$m)) { $location_arg = $m[1]; } ?>
 
-<a href="javascript:toggle('<?=$lookup_pcircs;?>','<?=$location_arg;?>')"><img src="images/blank.gif" class="hide_lookup_strip"></a>
+<a href="javascript:toggle('<?php echo $lookup_pcircs;?>','<?php echo $location_arg;?>')"><img src="images/blank.gif" class="hide_lookup_strip"></a>
 
-<?
+<?php
 include ("config.php");
 include ("mysql_connect.php");
 include ("array_search_recursive.php");

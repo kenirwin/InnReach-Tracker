@@ -1,4 +1,4 @@
-<?
+<?php
 ERROR_REPORTING(0);
 include("config.php");
 include("mysql_connect.php");

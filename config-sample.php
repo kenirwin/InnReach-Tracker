@@ -1,4 +1,4 @@
-<?
+<?php
 
 /* define local catalogs using only subdomain.domain.tld */
 $Local_Institution_Name = ""; // ex: Wittenberg University

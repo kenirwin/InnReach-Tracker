@@ -1,4 +1,4 @@
-<?
+<?php
 function GuideInstallation ($verbose = false) {
   global $debug;
   if (! $debug) { ERROR_REPORTING(0); }

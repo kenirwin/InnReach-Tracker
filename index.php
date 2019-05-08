@@ -1,4 +1,4 @@
-<?
+<?php
 
 $debug = false; //true;
 

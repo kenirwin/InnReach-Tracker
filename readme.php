@@ -13,7 +13,7 @@
 }
 </style>
 
-<?
+<?php
 $doc_nav = '<ul class="doc_nav">
 <li><a href="#install">Installation</a></li>
 <li><a href="#change_log">Change Log</a></li>
@@ -25,32 +25,32 @@ $doc_nav = '<ul class="doc_nav">
 ?>
 
 <a name="install"></a>
-<?=$doc_nav;?>
+<?php echo $doc_nav;?>
 <h2>Installation</h2>
 <pre>
-<? include ("readme.txt"); ?>
+<?php include ("readme.txt"); ?>
 </pre>
 <hr>
 <a name="change_log"></a>
-<?=$doc_nav;?>
+<?php echo $doc_nav;?>
 <h2>Change Log</h2>
 <pre>
-<? include ("changelog.txt"); ?>
+<?php include ("changelog.txt"); ?>
 </pre>
 <hr>
 <a name="upgrade"></a>
-<?=$doc_nav;?>
-<? include ("documentation_upgrade_notes.php"); ?>
+<?php echo $doc_nav;?>
+<?php include ("documentation_upgrade_notes.php"); ?>
 <hr>
 <a name="add_circ"></a>
-<?=$doc_nav;?>
-<? include ("documentation_how_to_add_circ_data.php"); ?>
+<?php echo $doc_nav;?>
+<?php include ("documentation_how_to_add_circ_data.php"); ?>
 <hr>
 <a name="add_title"></a>
-<?=$doc_nav;?>
-<? include ("documentation_how_to_add_title_data.php"); ?>
+<?php echo $doc_nav;?>
+<?php include ("documentation_how_to_add_title_data.php"); ?>
 <hr>
 <a name="license"></a>
-<?=$doc_nav;?>
-<? include ("license.php");?>
-<? include("version.php");?>
+<?php echo $doc_nav;?>
+<?php include ("license.php");?>
+<?php include("version.php");?>

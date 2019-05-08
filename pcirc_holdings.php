@@ -5,7 +5,7 @@
 </head>
 <h2>Add Local Holdings Information</h2>
 <p><a href="index.php">Return to View Top InnReach Requests</a></p>
-<?
+<?php
    /*
   error_reporting(E_ALL);
   ini_set("display_errors", true);

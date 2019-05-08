@@ -1,6 +1,6 @@
 <link href="pcirc_style.css" rel="stylesheet" type="text/css">
 
-<?
+<?php
 $debug = false; // true; 
 if (! $debug) { ERROR_REPORTING(0); }
 
