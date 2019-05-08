@@ -1,5 +1,6 @@
 <?php
-
+error_reporting(E_ALL &  ~E_NOTICE);
+//ini_set('display_errors', 1);
 $debug = false; //true;
 
 session_start();
@@ -7,12 +8,16 @@ include_once ("config.php");
 include_once ("header.php");
 include_once ("guide_installation.php");
 
+/* KEN - come back for this later
 if (! GuideInstallation ()) {
   GuideInstallation(true); //run in verbose mode if it's not all set to go
 }
+*/ 
+
+if (true == false) {}
 
 else { // run script
-  include ("mysql_connect.php");
+    include ("pdo_connect.php"); //return $db
   include ("scripts.php"); 
 
   if ($_REQUEST['delete_session_vars']) { session_unset(); }
