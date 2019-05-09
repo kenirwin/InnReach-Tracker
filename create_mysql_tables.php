@@ -6,13 +6,16 @@ if (! $debug) { ERROR_REPORTING(0); }
 
 function HandleQuery ($q) {
   // $debug = "yes";
+    global $db;
+    $results = array();
   if ($debug) { print "<div style=\"border: 1px solid grey\">$q<br>\n"; }
-  if (mysql_query($q)) {
-    $results[success] .= "<li class=good>SUCCESS: $q</li>\n";
+  $stmt = $db->query($q);
+  if ($stmt) {
+    $results['success'] .= "<li class=good>SUCCESS: $q</li>\n";
     if ($debug) { print "<li class=good>SUCCESS: $q</li>\n"; }
   }
   else {
-    $results[fail] .= "<li class=bad>FAILED: $q</li>\n"; 
+    $results['fail'] .= "<li class=bad>FAILED: $q</li>\n"; 
     if ($debug) { print "<li class=bad>FAILED: $q</li>\n"; }
   }
   if ($debug) { print "</div>\n";}
@@ -41,9 +44,9 @@ function parse_mysql_dump($url, $ignoreerrors = false){
     if (($sql_line != "") && (substr($tsl, 0, 2) != "--") && (substr($tsl, 0, 1) != "#")) {
       $query .= $sql_line;
       if (preg_match("/;\s*$/", $sql_line)) {
-	$result = mysql_query($query);
-	if (!$result && !$ignoreerrors) {
-	  die(mysql_error());
+	$stmt = $db->query($query);
+	if (!$stmt && !$ignoreerrors) {
+	  die("I die!");
 	}
 	$query = "";
       }
@@ -52,7 +55,7 @@ function parse_mysql_dump($url, $ignoreerrors = false){
 } //end function parse_mysql_dump
 
 include ("config.php");
-include ("mysql_connect.php");
+include ("pdo_connect.php");
 include ("scripts.php");
 
 if (! $MySQL_Database) { 
@@ -81,8 +84,8 @@ if ($errors < 1) {
   /* get a list of extant tables from prior installations */
   $extant_tables = array ();
   $q = "SHOW TABLES";
-  $r = mysql_query ($q);
-  while ($myrow = mysql_fetch_row($r)) {
+  $stmt = $db->query ($q);
+  while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $temp = $myrow[0];
     $extant_tables[$temp] = $temp;
   }
@@ -127,8 +130,8 @@ if ($errors < 1) {
     // if table exists, learn its contents for later comparison
     $old_itbc = array (); //stores call numbers of known titles
     $q5 = "SELECT distinct(`call`) FROM innreach_titles_by_call";
-    $r5 = mysql_query($q5);
-    while ($myrow = mysql_fetch_assoc($r5)) {
+    $stmt5 = $db->query($q5);
+    while ($myrow = $stmt5->fetch(PDO::FETCH_ASSOC) {
       extract ($myrow);
       array_push ($old_itbc, $call);
     } //end while learning old data
@@ -215,8 +218,8 @@ if (! $extant_tables[major_lc]) {
 $tables_with_preloaded_data = array ("major_lc", "innreach_titles_by_call");
 foreach ($tables_with_preloaded_data as $table) {
       $q = "SELECT count(*) FROM $table";
-      $r = mysql_query($q);
-      $n = (mysql_fetch_row($r));
+      $stmt = $db->query($q);
+      $n = $stmt->fetch(PDO::FETCH_NUM);
       if ($n[0] > 200)
 	print "<li class=good>SUCCESS: Loaded data into table $table</li>\n";
       else {
