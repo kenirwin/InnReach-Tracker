@@ -1,4 +1,3 @@
-    <script language = "javascript">
       var XMLHttpRequestObject = false; 
 
       if (window.XMLHttpRequest) {
@@ -47,5 +46,4 @@
 //          } 
         }
       }
-    </script>
 
