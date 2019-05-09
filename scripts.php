@@ -14,7 +14,7 @@ function AddTitle
 function ShowBooksByClass
 function ShowAllKnownTitles
 function ShowBooksByQuery
-function MysqlResultsTable ($mysql_results) 
+function PdoResultsTable ($mysql_results) 
 function ThisFolder
 function print_rr
 */
@@ -529,22 +529,20 @@ function ShowBooksByQuery($q, $params = []) {
   } //end function ShowBooksByQuery($q)
 
 
-
-
-function MysqlResultsTable ($mysql_results) {
-  while ($myrow = mysql_fetch_assoc($mysql_results)) {
-    if (! ($headers))
-      $headers = array_keys($myrow);
-    $rows .= " <tr>\n";
-    foreach ($headers as $k)
-      $rows .= "  <td class=$k>$myrow[$k]</td>\n";
-    $rows .= " </tr>\n";
-  } // end while myrow
-  $header = join("</th><th>",$headers);
-  $header = "<tr><th>$header</th></tr>\n";
-  $rows = "<table>$header$rows</table>\n";
-  return ($rows);
-} //end function MysqlResultsTable
+function PdoResultsTable ($stmt,$headers=null) {
+    while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if (! ($headers))
+            $headers = array_keys($myrow);
+        $rows .= " <tr>\n";
+        foreach ($headers as $k)
+            $rows .= "  <td class=$k>$myrow[$k]</td>\n";
+        $rows .= " </tr>\n";
+    } // end while myrow
+    $header = join("</th><th>",$headers);
+    $header = "<tr><th>$header</th></tr>\n";
+    $rows = "<table>$header$rows</table>\n";
+    return ($rows);
+} //end function PdoResultsTable
 
 
 
