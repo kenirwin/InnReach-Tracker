@@ -3,6 +3,10 @@
 <?php
 $debug = false; // true; 
 if (! $debug) { ERROR_REPORTING(0); }
+else {
+error_reporting(E_ALL & ~E_NOTICE);
+ini_set('display_errors', 1);
+}
 
 function HandleQuery ($q) {
   // $debug = "yes";
@@ -20,10 +24,10 @@ function HandleQuery ($q) {
   }
   if ($debug) { print "</div>\n";}
   return ($results);
-}
+} //end HandleQuery
 
 function parse_mysql_dump($url, $ignoreerrors = false){
-
+    global $db;
      /* 
       from:  http://code.google.com/p/simpleinvoices/source/browse/tags/20071231/install/connection_post.php
 
@@ -46,13 +50,17 @@ function parse_mysql_dump($url, $ignoreerrors = false){
       if (preg_match("/;\s*$/", $sql_line)) {
 	$stmt = $db->query($query);
 	if (!$stmt && !$ignoreerrors) {
-	  die("I die!");
+	  die('<p class="bad">Failed to parse and ingest data in <b>'.__FILE__.'</b> line: <b>'.__LINE__.'</b>: '.$query.'</p>');
 	}
 	$query = "";
       }
     }
   } //end foreach element in array
 } //end function parse_mysql_dump
+
+
+/* BEGIN main content */
+
 
 include ("config.php");
 include ("pdo_connect.php");
@@ -84,12 +92,12 @@ if ($errors < 1) {
   /* get a list of extant tables from prior installations */
   $extant_tables = array ();
   $q = "SHOW TABLES";
-  $stmt = $db->query ($q);
-  while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
+  $stmt = $db->query($q);
+  while ($myrow = $stmt->fetch(PDO::FETCH_NUM)) {
     $temp = $myrow[0];
     $extant_tables[$temp] = $temp;
   }
-  if ($debug)  { print_rr($extant_tables);}
+  if ($debug)  { print 'extant tables:'; print_rr($extant_tables);}
 
   if ($extant_tables[innreach_by_call]) {
     $success .= "<li class=good>SUCCESS: innreach_by_call already exists</li>";
@@ -131,7 +139,7 @@ if ($errors < 1) {
     $old_itbc = array (); //stores call numbers of known titles
     $q5 = "SELECT distinct(`call`) FROM innreach_titles_by_call";
     $stmt5 = $db->query($q5);
-    while ($myrow = $stmt5->fetch(PDO::FETCH_ASSOC) {
+    while ($myrow = $stmt5->fetch(PDO::FETCH_ASSOC)) {
       extract ($myrow);
       array_push ($old_itbc, $call);
     } //end while learning old data
@@ -153,7 +161,7 @@ if ($errors < 1) {
   } //end else
 
 
-  if ($extant_tables[major_lc]) {
+  if ($extant_tables['major_lc']) {
     $success .= "<li class=good>SUCCESS: major_lc already exists</li>";
   }
   else {
@@ -166,7 +174,7 @@ if ($errors < 1) {
     $fail .= $results[fail];
   } //end else 
 
-  if ($extant_tables[innreach_stats_by_ptype]) {
+  if ($extant_tables['innreach_stats_by_ptype']) {
     $success .= "<li class=good>SUCCESS: innreach_stats_by_ptype already exists</li>";
   }
   else {
@@ -209,7 +217,8 @@ else {
 
 /* supply LC data if its not already there */
 /* this will prevent overwriting local customizations */ 
-if (! $extant_tables[major_lc]) {
+if (! $extant_tables['major_lc']) {
+    print "<li>Trying to parse major_lc</li>";
   parse_mysql_dump("major_lc.sql");
 }
 

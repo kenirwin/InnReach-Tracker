@@ -24,12 +24,13 @@ function print_rr
  ************************************************************************/
 
 $q = "SELECT COUNT(DISTINCT(`month_ending`)) FROM `innreach_by_call`";
-$stmt = $db->query($q);
+if ($stmt = $db->query($q)) {
 $myrow = $stmt->fetch(PDO::FETCH_NUM);
 $total_months = $myrow[0];
+}
 
 $q ="SELECT  DISTINCT ( `month_ending` ) FROM  `innreach_by_call` WHERE month_ending != '0000-00-00' ORDER  BY month_ending";
-$stmt = $db->query($q);
+if ($stmt = $db->query($q)) {
 $i = 0;
 while ($myrow = $stmt->fetch(PDO::FETCH_NUM)) {
   if ($i == 0) {
@@ -40,14 +41,17 @@ while ($myrow = $stmt->fetch(PDO::FETCH_NUM)) {
   }
   $i++;
 } // end while checking date
+}
+
 
 //check to see if pcirc_stats is up-to-date
 $q = "SELECT  DISTINCT ( `last_pcirc` ) FROM  `innreach_stats_by_ptype`  ORDER  BY `last_pcirc` DESC  LIMIT 0 , 1";
-$stmt = $db->query($q);
+if ($stmt = $db->query($q)) {
 while ($myrow = $stmt->fetch(PDO::FETCH_NUM)) {
   $myrow[0] = date("M Y", strtotime($myrow[0]));
   if ($myrow[0] != $end)
     $warning = "<center><p class=warning>This display is not up-to-date! <a href=\"pcirc_sum_stats.php\">Click here</a> to update display to reflect recently-loaded data</p></center>\n";
+}
 }
 
 /***************************************************************
