@@ -51,9 +51,9 @@ $possible_titles = array();
 foreach ($lookupstring_param as $search) {
   $temp_a = array();
   $i++;
-  $q = "SELECT `title` from `innreach_by_title` WHERE $search and `title` like '%$narrow_lookup%' $add";
-  //  print "<p>$q</p>\n";
-  $stmt = $db->query($q);
+  $q = "SELECT `title` from `innreach_by_title` WHERE ? and `title` like ?";
+  $stmt = $db->prepare($q);
+  $stmt->execute(array($search,"%$narrow_lookup%"));
   while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
       extract($myrow);
       array_push ($temp_a, $title);
