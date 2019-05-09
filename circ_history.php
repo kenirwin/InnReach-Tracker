@@ -13,7 +13,7 @@ while ($myrow = mysql_fetch_assoc($r)) {
 print "<h2>Circ History for: $_REQUEST[call]</h2>\n";
 if ($title) { print "<h3>$title</h3>\n"; }
 
-$q = "SELECT * FROM innreach_by_call WHERE call = '$_REQUEST[call]'";
+$q = "SELECT * FROM innreach_by_call WHERE `call` = '$_REQUEST[call]'";
 $r = mysql_query($q);
 
 foreach ($ptypes as $code => $name) {
