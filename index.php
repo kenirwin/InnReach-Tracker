@@ -1,31 +1,39 @@
 <?php
-error_reporting(E_ALL &  ~E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 //ini_set('display_errors', 1);
 $debug = false; //true;
 
 session_start();
-include_once ("config.php");
-include_once ("header.php");
 include_once ("guide_installation.php");
 
-/* KEN - come back for this later
-if (! GuideInstallation ()) {
-  GuideInstallation(true); //run in verbose mode if it's not all set to go
-}
-*/ 
+/* 
+   this oddity is to eliminate some conflict between GuideInstallation and scripts.php
+   if the system is fully install, it sets a cookie and forwards to itself to move on to the regular business
+   until then, it runs the guided installation checker
+*/
 
-if (true == false) {}
+if (! array_key_exists('install_confirmed',$_SESSION)) {
+    if (GuideInstallation()) { 
+        $_SESSION['install_confirmed'] = true; 
+        header('Location: index.php');
+    }
+    else {
+        GuideInstallation(true); //run in verbose mode if it's not all set to go
+    }
+}
 
 else { // run script
-    include ("pdo_connect.php"); //return $db
-  include ("scripts.php"); 
-
-  if ($_REQUEST['delete_session_vars']) { session_unset(); }
-  HandleCookies(); // sets $min and $post_class as defined or as default
-  ThinkAbout($_SESSION);
-  print "<body>\n";
+    include_once ("config.php");
+    include_once ("header.php");
+    include_once ("pdo_connect.php"); //return $db
+    include_once ("scripts.php"); 
+    
+    if ($_REQUEST['delete_session_vars']) { session_unset(); }
+    HandleCookies(); // sets $min and $post_class as defined or as default
+    ThinkAbout($_SESSION);
+    print "<body>\n";
   
-  PrintPageTop();
+    PrintPageTop();
 
 
   /* Add titles to DB if submitted */
