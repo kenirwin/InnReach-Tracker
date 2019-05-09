@@ -14,6 +14,13 @@ $MySQL_Database = ""; //ex: "innreach_data"
 $MySQL_User = ""; 
 $MySQL_Password = "";
 
+//convert database variables to constants
+$constants = array ('Upload_Folder','MySQL_Host','MySQL_Database','MySQL_User','MySQL_Password');
+
+foreach ($constants as $v) {
+    define(strtoupper($v),$$v);
+}
+
 $ptypes = array();
 
 /* 
