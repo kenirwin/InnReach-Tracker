@@ -9,7 +9,7 @@ function GuideInstallation ($verbose = false) {
       ini_set('display_errors', 1);
   }
   include ("config.php");
-  include ("pdo_connect.php");
+  if (isset($MySQL_Host) && isset($MySQL_Database) && isset ($MySQL_User) && isset ($MySQL_Password)) { include ("pdo_connect.php"); }
   $print = '<html><head><title>InnReach Tracker - Installation Progress</title><link href="pcirc_style.css" rel="stylesheet" type="text/css"></head></html>';
   $print .= "<h1>InnReach Tracker - Installation Progress</h1>\n";
   $config_vars = array ("Local_Institution_Name", "Local_Institution_Short_Name", "Local_Catalog_Name", "Local_Catalog_URL", "InnReach_Catalog_URL", "InnReach_Catalog_Name", "MySQL_Host", "MySQL_Database", "MySQL_User", "MySQL_Password");
