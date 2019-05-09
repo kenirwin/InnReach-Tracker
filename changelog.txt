@@ -1,3 +1,9 @@
+version 1.3.0 - 5 May 2019
+* switched from mysql library to PDO for database interactions
+* compliant with php7
+* updated innreach_titles_by_call.sql
+* otherwise as similar as possible
+
 changes in version 1.2.0 - 6 March 2017
 
 * added matrix.php, showing a grid of recent publications and recent circulations
