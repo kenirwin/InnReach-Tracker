@@ -1,11 +1,17 @@
 <?php
+$debug = false; 
 
 function GuideInstallation ($verbose = false) {
   global $debug;
   if (! $debug) { ERROR_REPORTING(0); }
-  include_once ("config.php");
-  include_once ("pdo_connect.php");
-  $print = "<h1>InnReach Tracker - Installation Progress</h1>\n";
+  else {
+      error_reporting(E_ALL & ~E_NOTICE);
+      ini_set('display_errors', 1);
+  }
+  include ("config.php");
+  include ("pdo_connect.php");
+  $print = '<html><head><title>InnReach Tracker - Installation Progress</title><link href="pcirc_style.css" rel="stylesheet" type="text/css"></head></html>';
+  $print .= "<h1>InnReach Tracker - Installation Progress</h1>\n";
   $config_vars = array ("Local_Institution_Name", "Local_Institution_Short_Name", "Local_Catalog_Name", "Local_Catalog_URL", "InnReach_Catalog_URL", "InnReach_Catalog_Name", "MySQL_Host", "MySQL_Database", "MySQL_User", "MySQL_Password");
   if (is_null($db)) {
     $print .= "<h2>First: create a new MySQL database</h2>\n";
@@ -47,7 +53,7 @@ $print .= "</ul>\n";
 
 } //end if trying to connect to mysql / config variables are assigned
   
-  else { $print .= "<p class=bad>We'll try that once your variable are established in config.php</p>"; }
+  else { $print .= "<p class=bad>We'll try that once your variables are established in config.php</p>"; }
   
   $print .= "<h2>Establishing necessary database tables & loading data</h2>\n";
   if (! $incomplete) {
@@ -126,11 +132,12 @@ $n = $stmt->fetch(PDO::FETCH_NUM);
     }
   }
 
-  if ($incomplete) 
+  if ($incomplete) {
     return false;
-  else 
+  }
+  else {
     return true;
-
+  }
 } //end function GuideInstallation
 
 
