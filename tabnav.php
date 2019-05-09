@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 $array = array ("Monkeys", "Fish", "Freedom");
 $more = array ("IPL" => "http://www.ipl.org");

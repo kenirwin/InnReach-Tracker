@@ -1,4 +1,4 @@
-<? include("config.php"); ?>
+<?php include("config.php"); ?>
 <head><title>How to add title information to circ data</title></head>
 <link href="pcirc_style.css" rel="stylesheet" type="text/css">
 <h1>How to add title information to circ data</h1>
@@ -18,8 +18,8 @@
 <p>Here are some tools you can use to look up title information. I suggest using the title + statement of responsibility as the information you enter into the database for each title, e.g. <cite>Existentialism : basic writings / edited, with introductions, by Charles Guignon and Derk Pereboom</cite>.</p>
 <ul>
 
-    <li><b>The Innreach Catalog link</b> <?=$check_innreach_icon;?>: This icon is a link to a call number search for the item in the consortial catalog defined in <code>config.php</code>. The linked search will open in a new tab or window -- note: after your first link to the catalog, your browser may not change focus to the updated catalog window. (By default, this is the OhioLINK icon; if your library belongs to another consortium, you may change the icon in the config file.) This is often the simplest and most accurate way to lookup information, but it does not always works, especially if the call number is not defined in the MARC 050 field for the record of the item in question.</li>
-     <li><b>The Google search link</b> <?=$google_icon?>: A sloppy but often effective tool, the Google link searches for the call number as a phrase in Google; this often turns up a list of books on a library website including the book in question. When using this method, it is advisable to confirm the book title in your own consortial catalog to be sure of the correct title/call# match.</li>
+    <li><b>The Innreach Catalog link</b> <?php echo $check_innreach_icon;?>: This icon is a link to a call number search for the item in the consortial catalog defined in <code>config.php</code>. The linked search will open in a new tab or window -- note: after your first link to the catalog, your browser may not change focus to the updated catalog window. (By default, this is the OhioLINK icon; if your library belongs to another consortium, you may change the icon in the config file.) This is often the simplest and most accurate way to lookup information, but it does not always works, especially if the call number is not defined in the MARC 050 field for the record of the item in question.</li>
+     <li><b>The Google search link</b> <?php echo $google_icon?>: A sloppy but often effective tool, the Google link searches for the call number as a phrase in Google; this often turns up a list of books on a library website including the book in question. When using this method, it is advisable to confirm the book title in your own consortial catalog to be sure of the correct title/call# match.</li>
      <li><b>The Call Number link / Title History lookup</b>: Clicking on the call number (title history lookup) will open an inline pane in the current window. That pane (see below) will suggest possible titles based on matching dates of circulation for various titles with the dates of circulation for the selected call number. Sometimes this works very well, especially when there are at least 3 circulation instances to match on. This tool is generally not suitable for matching items with only one or two circulations.<br><img src="images/inline_lookup_pane.png" title="Inline Lookup Pane"></li>
 </ul>
 </li>
@@ -28,9 +28,9 @@
 
 <p>You can add local holdings information for items using <a href="pcirc_holdings.php">pcirc_holdings.php</a>. This script takes known titles and links to a title search in your local catalog to check holdings. For each title, you may add any of several entries:</p>
 <table>
-<tr><th>Y</th><td>Yes, for titles held locally. These titles will be marked wit the "have" icon defined in <code>config.php</code><br><?=$have_icon;?></td></tr>
-<tr><th>N</th><td>No, for titles not held in any form. These titles will be marked with the "no have" icon defined in <code>config.php</code><br><?=$nohave_icon;?></td></tr>
+<tr><th>Y</th><td>Yes, for titles held locally. These titles will be marked wit the "have" icon defined in <code>config.php</code><br><?php echo $have_icon;?></td></tr>
+<tr><th>N</th><td>No, for titles not held in any form. These titles will be marked with the "no have" icon defined in <code>config.php</code><br><?php echo $nohave_icon;?></td></tr>
 <tr><th>Any other notes, e.g.<br>ebook<br>1992 ed.</th><td>All notes other than Y/N will be treated as a modified form of "Yes" and will render like this:<br><img src="images/holdings_sortof.png" title="Approximate Holdings"></td></tr>
 </table>
 
-<p>Known titles for which holdings are unknown will be marked with a question-mark icon (also defined in <code>config.php</code>: <?=$question;?> This icon is a link to the <code>pcirc_holdings.php</code> page.</p>
+<p>Known titles for which holdings are unknown will be marked with a question-mark icon (also defined in <code>config.php</code>: <?php echo $question;?> This icon is a link to the <code>pcirc_holdings.php</code> page.</p>

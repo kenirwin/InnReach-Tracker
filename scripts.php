@@ -1,4 +1,4 @@
-<?
+<?php
 
 include ("tabnav.php");
 include ("sortLC.php");
@@ -14,7 +14,7 @@ function AddTitle
 function ShowBooksByClass
 function ShowAllKnownTitles
 function ShowBooksByQuery
-function MysqlResultsTable ($mysql_results) 
+function PdoResultsTable ($mysql_results) 
 function ThisFolder
 function print_rr
 */
@@ -24,31 +24,34 @@ function print_rr
  ************************************************************************/
 
 $q = "SELECT COUNT(DISTINCT(`month_ending`)) FROM `innreach_by_call`";
-$r = mysql_query($q);
-$myrow = mysql_fetch_row($r);
+if ($stmt = $db->query($q)) {
+$myrow = $stmt->fetch(PDO::FETCH_NUM);
 $total_months = $myrow[0];
-
+}
 
 $q ="SELECT  DISTINCT ( `month_ending` ) FROM  `innreach_by_call` WHERE month_ending != '0000-00-00' ORDER  BY month_ending";
-$r = mysql_query($q);
+if ($stmt = $db->query($q)) {
 $i = 0;
-while ($myrow = mysql_fetch_row($r)) { 
+while ($myrow = $stmt->fetch(PDO::FETCH_NUM)) {
   if ($i == 0) {
     $start = date("M Y", strtotime($myrow[0]));
   }
-  if ($i == (mysql_num_rows($r)-1)) {
+  if ($i == ($stmt->rowCount() - 1)) {
     $end = date("M Y", strtotime($myrow[0]));
   }
   $i++;
 } // end while checking date
+}
+
 
 //check to see if pcirc_stats is up-to-date
 $q = "SELECT  DISTINCT ( `last_pcirc` ) FROM  `innreach_stats_by_ptype`  ORDER  BY `last_pcirc` DESC  LIMIT 0 , 1";
-$r = mysql_query($q);
-while ($myrow = mysql_fetch_row($r)) {
+if ($stmt = $db->query($q)) {
+while ($myrow = $stmt->fetch(PDO::FETCH_NUM)) {
   $myrow[0] = date("M Y", strtotime($myrow[0]));
   if ($myrow[0] != $end)
     $warning = "<center><p class=warning>This display is not up-to-date! <a href=\"pcirc_sum_stats.php\">Click here</a> to update display to reflect recently-loaded data</p></center>\n";
+}
 }
 
 /***************************************************************
@@ -123,15 +126,16 @@ function PrintPageTop () {
     $display_most_recent_pcirc_date = date ("M Y",strtotime($most_recent_pcirc_date));
     $limit_note = "<br>Limiting to items that have circulated since $display_most_recent_pcirc_date\n<a href=\"$PHP_SELF?delete_limit=most_recent_pcirc_date\" class=\"delete_limits\">x</a>\n"; 
   }
-
+  
   if ($_SESSION[ptype_limit] != "all") {
     $ptype_limit = $_SESSION[ptype_limit];
     $limit_note .= "<br>Limiting to circs by Patron Type = $ptypes[$ptype_limit]\n<a href=\"$PHP_SELF?delete_limit=ptype_limit\" class=\"delete_limits\">x</a>";
   } //end if ptype-limit is set
-
-  $q = "SELECT subject from major_lc WHERE class = '$_SESSION[post_class]'";
-  $r = mysql_query($q);
-  while ($myrow = mysql_fetch_assoc($r)) {
+  global $db;
+  $q = "SELECT subject from major_lc WHERE class = ?";
+  $stmt = $db->prepare($q);
+  $stmt->execute(array($_SESSION['post_class']));
+  while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($myrow);
     // $subject is now defined
   }
@@ -161,8 +165,9 @@ function OptionsMenu() {
   $pre_form .= "<input type=hidden name=post_class value=$post_class>\n";
   
   $q = "SELECT * FROM `major_lc` order by `class`";
-  $r = mysql_query($q);
-  while ($myrow = mysql_fetch_assoc($r)) {
+  global $db;
+  $stmt = $db->query($q);
+  while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($myrow);
     $space = " ";  // "&nbsp;";
     if (strlen($class) == 1) { 
@@ -251,8 +256,9 @@ Limit to items with last InnReach circ of $recent_pcirc_select or&nbsp;more&nbsp
 
 function RecencyOptions ($date_to_match) {
   $q= "SELECT distinct `last_pcirc` from `innreach_stats_by_ptype` order by `last_pcirc` DESC";
-  $r= mysql_query($q);
-  while ($myrow = mysql_fetch_assoc($r)) {
+  global $db;
+  $stmt = $db->query($q);
+  while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($myrow);
     $disp_date = date ("M Y", strtotime($last_pcirc));
 
@@ -304,15 +310,28 @@ function BulkSubmit () {
  *********************************************************************/
 
 function AddTitle() {
-  global $_REQUEST;
+    global $_REQUEST, $db;
   extract ($_REQUEST);
-
-  $q = "INSERT INTO `innreach_titles_by_call` VALUES ('$call', '$title','')";
-  if (mysql_query($q)) { $successes .= "<li>Title added: $title</li>\n"; }
-  else { $errors .= "<li>Unable to add: $title<br>$q</li>\n"; }
-  $q = "UPDATE `innreach_stats_by_ptype` SET `title` = '$title' where `call` = '$call'";
-  if (mysql_query($q)) { $successes .= "<li>Title added to stats: $title</li>\n"; }
-  else { $errors .= "<li>Unable to add to stats: $title<br>$q</li>\n"; }
+  
+  $q = "INSERT INTO `innreach_titles_by_call` VALUES (?, ?, ?, ?)";
+  $stmt = $db->prepare($q);
+  $ok = $stmt->execute(array($call,$title,null,null));
+  if ($ok) {
+      $successes .= "<li>Title added: $title</li>\n"; 
+  }
+  else { 
+      $errors .= "<li>Unable to add: $title<br>$q</li>\n"; 
+  }
+  
+  $q = "UPDATE `innreach_stats_by_ptype` SET `title` = ? where `call` = ?";
+  $stmt = $db->prepare($q);
+  $ok = $stmt->execute(array($title,$call));
+  if ($ok) { 
+      $successes .= "<li>Title added to stats: $title</li>\n"; 
+  }
+  else { 
+      $errors .= "<li>Unable to add to stats: $title<br>$q</li>\n"; 
+  }
   if ($errors) { 
     $errors = stripslashes ($errors);
     print "<ol class=\"error\">$errors</ol>\n"; 
@@ -332,14 +351,27 @@ function ShowBooksByClass() {
   global $debug;
   $limit_to_month = $_REQUEST['limit_to_month'];
   $most_recent_pcirc_date = $_REQUEST['most_recent_pcirc_date'];
-  if ($limit_to_month) { $added_query = " and `last_pcirc` like '$limit_to_month%'"; }
-  elseif ($most_recent_pcirc_date) 
-    $added_query = " and `last_pcirc` >= '$most_recent_pcirc_date'";
+  $params = [$_SESSION['post_class'].'%',
+             $_SESSION['min'],
+             $_SESSION['ptype_limit']
+  ];
+
+  if (isset($limit_to_month)) { 
+      $added_query = " and `last_pcirc` like ?"; 
+      array_push($params, $limit_to_month.'%');
+  }
+  
+  elseif (isset($most_recent_pcirc_date)) {
+    $added_query = " and `last_pcirc` >= ?";
+    array_push($params, $most_recent_pcirc_date);
+  }
   $q = "SELECT * FROM `innreach_stats_by_ptype` WHERE `call` like '$_SESSION[post_class]%' and `pcircs` >= $_SESSION[min] $added_query and `ptype` = '$_SESSION[ptype_limit]'";
+  $q = "SELECT * FROM `innreach_stats_by_ptype` WHERE `call` like ? and `pcircs` >= ? and `ptype` = ? $added_query";
   if ($debug) { 
     print "<li>ShowBooksByClass: $q</li>\n"; 
+    print_r($params);
   }
-    $count = ShowBooksByQuery($q);
+  $count = ShowBooksByQuery($q, $params);
     return ($count);
 } // end function ShowBooksByClass
 
@@ -396,18 +428,22 @@ function ShowAllKnownTitles($sort="circs") {
   print "</table>\n";
 }
 
-  function ShowBooksByQuery($q) {
+function ShowBooksByQuery($q, $params = []) {
     global $google_icon, $check_innreach_icon, $have_icon, $nohave_icon, $min, $question, $debug;
     global $InnReach_Catalog_URL;
+    global $db;
     $mytab = $_SESSION['mytab'];
-    $r = mysql_query ($q);
+    $stmt = $db->prepare($q);
+    $stmt->execute($params);
     if ($debug) {
       print "<li>ShowBooksByQuery: $q</li>\n";
+      print_r($params);
     }
-    $_SESSION[last_query] = $q;
-    $count = mysql_num_rows($r);
+    $_SESSION['last_query'] = $q;
+    $_SESSION['last_params'] = $params;
+    $count = $stmt->rowCount();
     $totals = array();
-    while ($myrow=mysql_fetch_assoc($r)) {
+    while ($myrow= $stmt->fetch(PDO::FETCH_ASSOC)) {
       extract($myrow);
       $ti_known[$call] = $title;
       if ($have == "Y")
@@ -470,18 +506,18 @@ function ShowAllKnownTitles($sort="circs") {
     if ($debug)  { print "<h2>$q</h2>\n"; }
     if ($printed < 1) { 
       $q = "SELECT count(*) FROM `innreach_stats_by_ptype` WHERE 1";
-      $r = mysql_query($q);
-      while ($myrow = mysql_fetch_row($r)) {
+      $stmt = $db->query($q);
+      while ($myrow = $stmt->fetch(PDO::FETCH_NUM)) {
         $rows = $myrow[0];
       }
       if ($rows == 0) {
-        print "<center><p class=warning>This display is not up-to-date! <a href=\"pcirc_sum_stats.php\">Click here</a> to update display to reflect recently-loaded data</p></center>\n";
+        print "<center><p class=warning>This display is not up-to-date! <a href=\"pcirc_sum_stats.php\">Click here</a> to update display to reflect recently-loaded data</p></center>".PHP_EOL;
       } //end if no stats in table
       else { //if stats in table
-	print "<h2>No titles in this LC Class ($_SESSION[post_class]) with at least $_SESSION[min] InnReach circs</h2> <p>Use the letter and number selection table on the right hand side to choose another LC class or to display items with a lower number of circulations.</p>\n"; 
+	print '<h2>No titles in this LC Class ('.$_SESSION['post_class'].') with at least '.$_SESSION['min'].' InnReach circs</h2> <p>Use the letter and number selection table on the right hand side to choose another LC class or to display items with a lower number of circulations.</p>'.PHP_EOL; 
       //      print "<h2>$q</h2>\n";
       } //end else if no stats in table
-      print "<p>For more information on using this program, see the <a href=\"readme.php\">documentation</a>.</p>\n";
+      print "<p>For more information on using this program, see the <a href=\"readme.php\">documentation</a>.</p>".PHP_EOL;
     } // end if nothing printed
   } //end if show individual titles
 
@@ -490,29 +526,27 @@ function ShowAllKnownTitles($sort="circs") {
 <h2>Bulk submission of titles</h2>
  <input type=hidden name=limit_to_month value=$limit_to_month>
  <div id=\"bulk_submit_table\">
-<table>$header$bulk_add</table></div><input type=submit name=bulk_submit value=\"Submit Titles in Bulk\"></form>\n";
+<table>$header$bulk_add</table></div><input type=submit name=bulk_submit value=\"Submit Titles in Bulk\"></form>".PHP_EOL;
   } //end if bulk add
 
   return ($count);
   } //end function ShowBooksByQuery($q)
 
 
-
-
-function MysqlResultsTable ($mysql_results) {
-  while ($myrow = mysql_fetch_assoc($mysql_results)) {
-    if (! ($headers))
-      $headers = array_keys($myrow);
-    $rows .= " <tr>\n";
-    foreach ($headers as $k)
-      $rows .= "  <td class=$k>$myrow[$k]</td>\n";
-    $rows .= " </tr>\n";
-  } // end while myrow
-  $header = join("</th><th>",$headers);
-  $header = "<tr><th>$header</th></tr>\n";
-  $rows = "<table>$header$rows</table>\n";
-  return ($rows);
-} //end function MysqlResultsTable
+function PdoResultsTable ($stmt,$headers=null) {
+    while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if (! ($headers))
+            $headers = array_keys($myrow);
+        $rows .= " <tr>\n";
+        foreach ($headers as $k)
+            $rows .= "  <td class=$k>$myrow[$k]</td>\n";
+        $rows .= " </tr>\n";
+    } // end while myrow
+    $header = join("</th><th>",$headers);
+    $header = "<tr><th>$header</th></tr>\n";
+    $rows = "<table>$header$rows</table>\n";
+    return ($rows);
+} //end function PdoResultsTable
 
 
 

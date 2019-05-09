@@ -1,4 +1,4 @@
-<?
+<?php
 
 /* define local catalogs using only subdomain.domain.tld */
 $Local_Institution_Name = ""; // ex: Wittenberg University
@@ -13,6 +13,13 @@ $MySQL_Host = "localhost";   /* if "localhost" doesn't work, try "127.0.0.1" */
 $MySQL_Database = ""; //ex: "innreach_data"
 $MySQL_User = ""; 
 $MySQL_Password = "";
+
+//convert database variables to constants
+$constants = array ('Upload_Folder','MySQL_Host','MySQL_Database','MySQL_User','MySQL_Password');
+
+foreach ($constants as $v) {
+    define(strtoupper($v),$$v);
+}
 
 $ptypes = array();
 

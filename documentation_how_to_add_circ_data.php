@@ -1,4 +1,4 @@
-<?
+<?php
 ShowDataLoadInstructions(); 
 
 function ShowDataLoadInstructions () {
@@ -6,7 +6,7 @@ include ("config.php");
 ?>
 <h1>How to get data from you catalog into InnreachTracker</h1>
 <ol>
- <li>Go to your catalog's <a href="<?=$III_manage;?>">Web Management Reports</a>.</li>
+<li>Go to your catalog&apos;s <a href="<?php echo $III_manage;?>">Web Management Reports</a>.</li>
  <li>Select: Collection >> Collection Development.</li>
  <li>Log in with your initials and password.</li>
  <li>Select: 
@@ -80,7 +80,7 @@ include ("config.php");
     </ol>
 				 </li>
 </ol>
-<?
+<?php
 
 				 } //end function ShowDataLoadInstructions
 ?>

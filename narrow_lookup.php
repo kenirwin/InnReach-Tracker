@@ -1,15 +1,15 @@
 <div class="inline_lookup_pane">
 
-<? 
+<?php 
 extract($_REQUEST);
 
 if (preg_match("/(^[^\_]+)\_/",$location,$m)) { $location_arg = $m[1]; } ?>
 
-<a href="javascript:toggle('<?=$lookup_pcircs;?>','<?=$location_arg;?>')"><img src="images/blank.gif" class="hide_lookup_strip"></a>
+<a href="javascript:toggle('<?php echo $lookup_pcircs;?>','<?php echo $location_arg;?>')"><img src="images/blank.gif" class="hide_lookup_strip"></a>
 
-<?
+<?php
 include ("config.php");
-include ("mysql_connect.php");
+include ("pdo_connect.php");
 include ("array_search_recursive.php");
 
 
@@ -19,10 +19,11 @@ include ("array_search_recursive.php");
 
 $lookupstring_param = array();
 
-$q = "SELECT * FROM `innreach_by_call` WHERE `call` = '$lookup_pcircs' ORDER BY `month_ending` DESC";
-$r = mysql_query($q);
+$q = "SELECT * FROM `innreach_by_call` WHERE `call` = ? ORDER BY `month_ending` DESC";
+$stmt = $db->prepare($q);
+$stmt->execute(array($lookup_pcircs));
 
-while ($myrow = mysql_fetch_assoc($r)) {
+while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
   extract($myrow);
 
   $month = date ("M Y",strtotime($month_ending));
@@ -50,11 +51,10 @@ $possible_titles = array();
 foreach ($lookupstring_param as $search) {
   $temp_a = array();
   $i++;
-  $q = "SELECT `title` from `innreach_by_title` WHERE $search and `title` like '%$narrow_lookup%' $add";
-  //  print "<p>$q</p>\n";
-
-    $r = mysql_query($q);
-    while ($myrow = mysql_fetch_assoc($r)) {
+  $q = "SELECT `title` from `innreach_by_title` WHERE ? and `title` like ?";
+  $stmt = $db->prepare($q);
+  $stmt->execute(array($search,"%$narrow_lookup%"));
+  while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
       extract($myrow);
       array_push ($temp_a, $title);
     }
